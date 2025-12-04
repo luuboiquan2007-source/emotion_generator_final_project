@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Emotion Quiz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: #000;
+      color: #00ff55;
+      font-family: "Share Tech Mono", monospace;
+      text-align: center;
+      padding-top: 0px;
+    }
+    h1{
+	font-size: 37px;
+      text-shadow: 0 0 8px #00ff55;
+      margin-bottom: 30px;
+	}
+    h2 {
+      font-size: 26px;
+      text-shadow: 0 0 8px #00ff55;
+      margin-bottom: 30px;
+    }
+
+    select {
+      width: 80%;
+      max-width: 380px;
+      padding: 12px;
+      background: #000;
+      color: #00ff55;
+      border: 2px solid #00ff55;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #00ff55;
+      transition: 0.2s;
+    }
+
+    select:hover {
+      box-shadow: 0 0 14px #00ff55;
+      background: rgba(0,255,85,0.1);
+    }
+
+    option {
+      background: #000;
+      color: #00ff55;
+    }
+
+    #nextBtn {
+      margin-top: 40px;
+      padding: 12px 25px;
+      font-size: 18px;
+      background: #000;
+      color: #00ff55;
+      border: 2px solid #00ff55;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: 0.2s;
+    }
+
+    #nextBtn:hover {
+      box-shadow: 0 0 12px #00ff55;
+      background: rgba(0,255,85,0.1);
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <h1>Emotion Quiz</h1>
+
+<h2>When you start your morning, what thought usually comes first?</h2>
+  <select id="q1">
+    <option value="">-- Choose an answer --</option>
+    <option value="A">Today feels peaceful. </option>
+    <option value="B">I feel good about today! </option>
+    <option value="C"> I’m not in the mood for anything. </option>
+    <option value="D">Everything is already annoying. </option>
+    <option value="E"> I can’t wait to see what happens! </option>
+    <option value="F">I’m thinking of someone special. </option>
+  </select>
+
+
+<h2>How do you react when you unexpectedly get free time?</h2>
+  <select id="q2">
+    <option value="">-- Choose an answer --</option>
+    <option value="A">I relax and breathe slowly. </option>
+    <option value="B">I smile immediately. </option>
+    <option value="C">I just sit quietly, not sure what to do. </option>
+    <option value="D">I think about things that irritated me earlier. </option>
+    <option value="E"> I feel a burst of energy. </option>
+    <option value="F"> I want to spend that time with someone I care about. </option>
+  </select>
+
+<h2>When you receive a message from someone important, what happens first?</h2>
+  <select id="q3">
+    <option value="">-- Choose an answer --</option>
+    <option value="A">I feel steady and balanced. </option>
+    <option value="B">It brightens my mood.</option>
+    <option value="C"> I feel a little heavy inside. </option>
+    <option value="D"> I get annoyed if it’s not what I expected. </option>
+    <option value="E"> My heart jumps a bit</option>
+    <option value="F">I feel warm and connected.</option>
+  </select>
+
+<h2>When you arrive at a new place, how do you usually feel?</h2>
+  <select id="q4">
+    <option value="">-- Choose an answer --</option>
+    <option value="A">Comfortable and at ease </option>
+    <option value="B">Healing and stay positive </option>
+    <option value="C"> A bit down or distant if it not what I expected </option>
+    <option value="D"> Irritated by small things. </option>
+    <option value="E"> Curious and energized. </option>
+    <option value="F">More open and affectionate. </option>
+  </select>
+
+<h2>Thinking about today, which reaction describes you the most?</h2>
+  <select id="q5">
+    <option value="">-- Choose an answer --</option>
+    <option value="A">I found moments to stay peaceful. </option>
+    <option value="B">I noticed things that made me smile. </option>
+    <option value="C"> I had waves of low emotion. </option>
+    <option value="D"> I felt frustrated at times. </option>
+    <option value="E"> I had bursts of enthusiasm. </option>
+    <option value="F"> I felt close to someone emotionally.</option>
+  </select>
+
+  <br>
+  <button id="nextBtn" onclick="calculateEmotion()">See Your Emotion</button>
+
+
+  <script>
+    function calculateEmotion() {
+      let counts = { A:0, B:0, C:0, D:0, E:0, F:0 };
+
+      let answers = [
+        document.getElementById("q1").value,
+        document.getElementById("q2").value,
+        document.getElementById("q3").value,
+        document.getElementById("q4").value,
+        document.getElementById("q5").value
+      ];
+
+      if (answers.includes("")) {
+        alert("Please answer all questions!");
+        return;
+      }
+
+      answers.forEach(ans => counts[ans]++);
+
+      let highest = Math.max(...Object.values(counts));
+
+      let winners = Object.keys(counts).filter(key => counts[key] === highest);
+
+
+      // 1. Clear single winner
+      if (winners.length === 1) {
+        goToEmotion(winners[0]);
+        return;
+      }
+
+      // 2. Tie between two emotions → mixed emotion page
+      if (winners.length === 2) {
+        window.location.href = "Emotional_Generator/Emotional_Generator.html";
+        return;
+      }
+
+      // 3. Tie between 3 or more emotions → totally confused → random emotion page
+      if (winners.length >= 3) {
+        window.location.href = "Emotional_Generator/Emotional_Generator.html";
+        return;
+      }
+    }
+
+    // Redirect based on final emotion letter
+    function goToEmotion(letter) {
+      if (letter === "A") window.location.href = "calm/calm.html";
+      if (letter === "B") window.location.href = "happy/happy.html";
+      if (letter === "C") window.location.href = "sad_/sad.html";
+      if (letter === "D") window.location.href = "angry/angry.html";
+      if (letter === "E") window.location.href = "excited/excited.html";
+      if (letter === "F") window.location.href = "love/love.html";
+    }
+  </script>
+
+</body>
+</html>
